@@ -38,13 +38,17 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
 
     # local
-    "users.apps.UsersConfig",
+    "account.apps.AccountConfig",
     "common.apps.CommonConfig",
+    "shop.apps.ShopConfig",
 
     # 3rd party
     "rest_framework_simplejwt",
     "rest_framework",
+    "crispy_forms",
+    "crispy_bootstrap5",
 ]
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -61,7 +65,7 @@ ROOT_URLCONF = "config.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -144,3 +148,13 @@ REST_FRAMEWORK = {
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
 }
+MEDIA_URL = "media/"
+MEDIA_ROOT = BASE_DIR / "media"
+AUTH_USER_MODEL = "account.User"
+
+STATIC_URL = "static/"
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
+
+REDIRECT_LOGIN_URL = "/"
+REDIRECT_LOGOUT_URL = "/account/login"
