@@ -1,3 +1,4 @@
+
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
@@ -14,6 +15,9 @@ urlpatterns = [
     path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
     path("", include("shop.urls")),
     path("account/", include("account.urls")),
+
+    # bank
+    path("payment/", include("payment.urls", namespace="azbankgateways")),
 ]
 
 

@@ -41,12 +41,16 @@ INSTALLED_APPS = [
     "account.apps.AccountConfig",
     "common.apps.CommonConfig",
     "shop.apps.ShopConfig",
+    "payment.apps.PaymentConfig",
 
     # 3rd party
     "rest_framework_simplejwt",
     "rest_framework",
     "crispy_forms",
     "crispy_bootstrap5",
+
+    # bank
+    "azbankgateways",
 ]
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
@@ -73,6 +77,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "shop.context_processors.count_item_in_cart",
             ],
         },
     },
@@ -158,3 +163,28 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 
 REDIRECT_LOGIN_URL = "/"
 REDIRECT_LOGOUT_URL = "/account/login"
+
+
+
+# bank
+AZ_IRANIAN_BANK_GATEWAYS = {
+    "GATEWAYS": {
+
+        "ZARINPAL": {
+            "MERCHANT_CODE": "<YOUR MERCHANT CODE>",
+            "SANDBOX": 1,  # 0 disable, 1 active
+        },
+    },
+    "IS_SAMPLE_FORM_ENABLE": True,
+    "DEFAULT": "BMI",
+    "CURRENCY": "IRR",
+    "TRACKING_CODE_QUERY_PARAM": "tc",
+    "TRACKING_CODE_LENGTH": 16,
+    "SETTING_VALUE_READER_CLASS": "azbankgateways.readers.DefaultReader",
+    "BANK_PRIORITIES": [
+        "ZARINPAL",
+
+    ],
+    "IS_SAFE_GET_GATEWAY_PAYMENT": False,
+    "CUSTOM_APP": None,
+}
