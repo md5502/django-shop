@@ -38,6 +38,8 @@ class Product(BaseModel):
     tags = models.ManyToManyField(Tag, related_name="products")
     discount_type = models.CharField(max_length=1, choices=DISCOUNT_CHOICES, default=DISCOUNT_CHOICES[0][0])
     discount_value = models.FloatField(blank=True, null=True)
+    quantity = models.PositiveIntegerField(default=1, null=True, blank=True)
+    related_products = models.ForeignKey("self", on_delete=models.SET_NULL, blank=True, null=True)
 
     def __str__(self) -> str:
         return self.name
@@ -80,7 +82,7 @@ class Order(BaseModel):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self) -> str:
-        return self.user
+        return self.user.username
 
 
 class OrderLine(BaseModel):
@@ -90,4 +92,4 @@ class OrderLine(BaseModel):
     quantity = models.PositiveIntegerField()
 
     def __str__(self) -> str:
-        return f"{self.order}, {self.product}"
+        return self.order.user.username
