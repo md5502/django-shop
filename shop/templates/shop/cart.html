@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container pt-5" style="min-height: 80vh;">
+  <h1>Cart</h1>
+
+  {% if cart_items %}
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart_items %}
+      <tr>
+        <input
+          type="hidden"
+          class="cart_product_id"
+          value="{{ item.product.id }}"
+        />
+        <input
+          type="hidden"
+          class="current-product-quantity"
+          value="{{ item.quantity }}"
+        />
+        {% csrf_token %}
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.product.price }}</td>
+        <td>
+          <div class="btn-group">
+            <a class="btn btn-danger cart-decrease-quantity" href="">-</a>
+            <span class="btn current-quantity-display">{{ item.quantity }}</span>
+            <a class="btn btn-primary cart-increase-quantity" href="">+</a>
+          </div>
+        </td>
+        <td>{{ item.total|floatformat:2 }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Review and Checkout Section -->
+  <div class="cart-summary">
+    <h3>Review Your Cart</h3>
+    <p>Total Items: {{ cart.total_items }}</p>
+    <p>Total Price: {{ total_price|floatformat:2 }}</p>
+  </div>
+
+  <!-- Checkout Button -->
+  <div class="checkout">
+    <a href="{% url 'shop:checkout' %}" class="btn btn-success">Proceed to Checkout</a>
+  </div>
+
+  {% else %}
+  <div class="empty-cart">
+    <h3>Your cart is currently empty.</h3>
+    <p>Browse products and add items to your cart.</p>
+    <a href="{% url 'shop:home' %}" class="btn btn-primary">Continue Shopping</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
